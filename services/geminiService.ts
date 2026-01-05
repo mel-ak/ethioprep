@@ -2,7 +2,13 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Subject, Question } from "../types.ts";
 
-const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+const getAI = () => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    console.error("Gemini API_KEY is missing in process.env. Please configure it in your deployment settings.");
+  }
+  return new GoogleGenAI({ apiKey: apiKey || '' });
+};
 
 export const generateQuestions = async (subject: Subject, count: number = 5): Promise<Question[]> => {
   const ai = getAI();
