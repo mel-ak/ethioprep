@@ -3,9 +3,10 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { Subject, Question } from "../types.ts";
 
 const getAI = () => {
+  // The API_KEY is provided via the environment variable in Vercel or your deployment platform.
   const apiKey = process.env.API_KEY;
   if (!apiKey) {
-    console.error("Gemini API_KEY is missing in process.env. Please configure it in your deployment settings.");
+    console.error("Gemini API_KEY is missing. Ensure it is set as an environment variable.");
   }
   return new GoogleGenAI({ apiKey: apiKey || '' });
 };
