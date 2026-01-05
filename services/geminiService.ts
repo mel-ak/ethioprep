@@ -1,12 +1,20 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { Subject, Question } from "../types.ts";
 
+// Fallback provided by user for environment where process.env might be empty
+const API_KEY = process.env.API_KEY || 'AIzaSyAWVysiPEohH4GVdx7uN9nF7YKTpHk_Jrk';
+
+const getAI = () => new GoogleGenAI({ apiKey: API_KEY });
+
+const MATH_INSTRUCTION = "DO NOT use LaTeX symbols, dollar signs ($), or backslashes. Use plain text only (e.g., 'sin(theta)' instead of '\sin\theta', 'v^2' instead of 'v^{2}', '*' for multiplication). All formulas must be readable as plain text.";
+
 export const generateQuestions = async (subject: Subject, count: number = 5): Promise<Question[]> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = getAI();
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: `Generate ${count} multiple-choice questions for the Ethiopian University Entrance Exam (EHEECE) for the subject of ${subject}. Ensure they reflect the actual curriculum standards. Provide clear explanations for the solutions.`,
+    contents: `Generate ${count} multiple-choice questions for the Ethiopian University Entrance Exam (EHEECE) for ${subject}. 
+    ${MATH_INSTRUCTION}
+    Ensure questions reflect curriculum standards. Provide plain text explanations.`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {
@@ -45,27 +53,30 @@ export const generateQuestions = async (subject: Subject, count: number = 5): Pr
 };
 
 export const generateWorksheet = async (subject: Subject, topic: string): Promise<string> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = getAI();
   const response = await ai.models.generateContent({
     model: "gemini-3-pro-preview",
     contents: `Create a detailed study worksheet for Ethiopian students preparing for their entrance exam. 
     Subject: ${subject}
     Topic: ${topic}
+    ${MATH_INSTRUCTION}
     Include:
     1. Key Formulas/Concepts Summary
-    2. 3 Solved Example Problems with step-by-step logic
-    3. 5 Practice Exercises (without answers immediately, but mention they should try them).
-    Format the output in clean Markdown.`,
+    2. 3 Solved Example Problems with step-by-step plain text logic
+    3. 5 Practice Exercises.
+    Format the output in clean Markdown but KEEP MATH PLAIN TEXT.`,
   });
 
   return response.text || "Failed to generate worksheet content.";
 };
 
 export const solveProblem = async (problemText: string): Promise<string> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = getAI();
   const response = await ai.models.generateContent({
     model: "gemini-3-pro-preview",
-    contents: `You are an expert tutor for the Ethiopian University Entrance Exam. Solve this problem step-by-step and explain the underlying concepts clearly: \n\n${problemText}`,
+    contents: `You are an expert tutor for the Ethiopian University Entrance Exam. Solve this problem step-by-step.
+    ${MATH_INSTRUCTION}
+    Identify the topic, show calculations using standard keyboard characters, and explain the logic clearly without any disturbing symbols: \n\n${problemText}`,
   });
 
   return response.text || "Unable to solve this problem at the moment.";

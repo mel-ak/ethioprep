@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Subject } from '../types.ts';
 import { SUBJECT_LIST } from '../constants.tsx';
 import { generateWorksheet } from '../services/geminiService.ts';
 import { FileText, Loader2, Download, Search } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 const WorksheetSection: React.FC = () => {
   const [subject, setSubject] = useState<Subject>(Subject.MATH);
@@ -60,8 +60,8 @@ const WorksheetSection: React.FC = () => {
       </div>
 
       {worksheetContent && (
-        <div className="bg-white p-6 rounded-2xl border shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b">
+        <div className="bg-white p-6 md:p-10 rounded-2xl border shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="flex items-center justify-between mb-8 pb-4 border-b">
             <div className="flex items-center gap-3">
               <div className="bg-blue-600 p-2 rounded-lg text-white">
                 <FileText size={24} />
@@ -73,16 +73,13 @@ const WorksheetSection: React.FC = () => {
             </div>
             <button 
               onClick={() => window.print()}
-              className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg font-semibold"
+              className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg font-semibold transition-colors"
             >
               <Download size={20} /> Print / Save
             </button>
           </div>
-          <div className="prose max-w-none prose-blue">
-             {/* Using a simple formatter for Markdown-like text since we don't have a library in this specific environment's constraints, but standard practice would use react-markdown */}
-             <div className="whitespace-pre-wrap text-gray-700 font-serif leading-relaxed">
-               {worksheetContent}
-             </div>
+          <div className="prose prose-blue max-w-none">
+            <ReactMarkdown>{worksheetContent}</ReactMarkdown>
           </div>
         </div>
       )}
