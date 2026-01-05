@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { solveProblem } from '../services/geminiService';
+import { solveProblem } from '../services/geminiService.ts';
 import { Brain, Send, Loader2, Sparkles, MessageCircle } from 'lucide-react';
 
 const AISolver: React.FC = () => {

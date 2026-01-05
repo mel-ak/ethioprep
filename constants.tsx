@@ -12,7 +12,7 @@ import {
   ScrollText,
   Calculator
 } from 'lucide-react';
-import { Subject } from './types';
+import { Subject } from './types.ts';
 
 export const SUBJECT_METADATA: Record<Subject, { color: string; icon: React.ReactNode }> = {
   [Subject.MATH]: { color: 'bg-blue-500', icon: <Calculator className="w-6 h-6" /> },

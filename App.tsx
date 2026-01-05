@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
-import Layout from './components/Layout';
-import Quiz from './components/Quiz';
-import WorksheetSection from './components/WorksheetSection';
-import AISolver from './components/AISolver';
-import { Subject } from './types';
-import { SUBJECT_METADATA, SUBJECT_LIST } from './constants';
+import Layout from './components/Layout.tsx';
+import Quiz from './components/Quiz.tsx';
+import WorksheetSection from './components/WorksheetSection.tsx';
+import AISolver from './components/AISolver.tsx';
+import { Subject } from './types.ts';
+import { SUBJECT_METADATA, SUBJECT_LIST } from './constants.tsx';
 import { 
   LineChart, 
   Line, 

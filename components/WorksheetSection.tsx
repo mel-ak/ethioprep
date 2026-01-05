@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { Subject } from '../types';
-import { SUBJECT_LIST } from '../constants';
-import { generateWorksheet } from '../services/geminiService';
+import { Subject } from '../types.ts';
+import { SUBJECT_LIST } from '../constants.tsx';
+import { generateWorksheet } from '../services/geminiService.ts';
 import { FileText, Loader2, Download, Search } from 'lucide-react';
 
 const WorksheetSection: React.FC = () => {
