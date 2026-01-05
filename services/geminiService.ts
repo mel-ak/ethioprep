@@ -2,17 +2,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Subject, Question } from "../types.ts";
 
-const getAI = () => {
-  // The API_KEY is provided via the environment variable in Vercel or your deployment platform.
-  const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    console.error("Gemini API_KEY is missing. Ensure it is set as an environment variable.");
-  }
-  return new GoogleGenAI({ apiKey: apiKey || '' });
-};
-
 export const generateQuestions = async (subject: Subject, count: number = 5): Promise<Question[]> => {
-  const ai = getAI();
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
     contents: `Generate ${count} multiple-choice questions for the Ethiopian University Entrance Exam (EHEECE) for the subject of ${subject}. Ensure they reflect the actual curriculum standards. Provide clear explanations for the solutions.`,
@@ -54,7 +45,7 @@ export const generateQuestions = async (subject: Subject, count: number = 5): Pr
 };
 
 export const generateWorksheet = async (subject: Subject, topic: string): Promise<string> => {
-  const ai = getAI();
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const response = await ai.models.generateContent({
     model: "gemini-3-pro-preview",
     contents: `Create a detailed study worksheet for Ethiopian students preparing for their entrance exam. 
@@ -71,7 +62,7 @@ export const generateWorksheet = async (subject: Subject, topic: string): Promis
 };
 
 export const solveProblem = async (problemText: string): Promise<string> => {
-  const ai = getAI();
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const response = await ai.models.generateContent({
     model: "gemini-3-pro-preview",
     contents: `You are an expert tutor for the Ethiopian University Entrance Exam. Solve this problem step-by-step and explain the underlying concepts clearly: \n\n${problemText}`,
